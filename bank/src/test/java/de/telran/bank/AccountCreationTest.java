@@ -31,15 +31,16 @@ public class AccountCreationTest {
         // given
         Account account = new Account(new UUID(5, 5), "Anton", "Ermak");
 
-        // when
+//         when
         MvcResult createResult = mvc.perform(MockMvcRequestBuilders.post("/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(writeJson(account)))
                 .andReturn();
 
-        MvcResult receiveResult = mvc.perform(MockMvcRequestBuilders.get("/account")).andReturn();
+        MvcResult receiveResult = mvc.perform(MockMvcRequestBuilders.get("/account/{id}",
+                account.getUuid())).andReturn();
 
-        // then
+ //        then
         Assertions.assertEquals(200, createResult.getResponse().getStatus());
         Assertions.assertEquals(account, readJson(receiveResult, Account.class));
     }
